@@ -45,9 +45,33 @@ class FizzBuzzList(list):
             print ""
             
 
+"""
+The implementation of this function to find the shortest possible fizz buzz sequence is to 
+use the sliding window technique. The total fizzbuzz sequence happens every 15 integers so we can 
+determine the maximum sequence number no matter what by multiplying the number of words in the input
+list * 15. We always keep a list of what 'fizz','buzz','fizzbuzz' keywords are in the current window we are evaluating.
+
+Run-time Complexity:
+Due to my implemention of isSubList it's possible to be O(n^2) where n is the size of the input list
+
+The psuedocode for the sliding window is as follows:
+    var window as list
+    while (the start of the window hasn't reached the max):
+        if the input list is a sublist of our current window
+            if current window size is smaller than our min window size
+                set this window as our new min size window
+                
+                remove the first element our window if the start window index contains a keyword
+                decrease our window size by moving our window start index by one
+                
+            else
+                increase the window size and a keyword (if applicable) to our window
+        
+            
+    return the smallest window we found that contained our input list
+"""
 def shortestSequenceFizzBuzz(input):
     
-    #The lowest sequence starts at 3
     current_num = 0
     #The highest sequence we possibly go up to is 3 x 5 x size of the input list
     max_seq = 15 * len(input)
@@ -60,7 +84,7 @@ def shortestSequenceFizzBuzz(input):
     
     while start_sequence < max_seq:
         #Check to see if the window captures the input sequence
-        match = sublist1(input,window)
+        match = isSubList(input,window)
         
         if match is True:
             if (current_num - start_sequence) < (smallest_end - smallest_start):
@@ -96,7 +120,7 @@ def shortestSequenceFizzBuzz(input):
         return range(smallest_start,smallest_end + 1)
                 
         
-def sublist1(input, window):
+def isSubList(input, window):
 
     for i in range(0,len(window) - len(input) + 1):
         is_sublist = True
@@ -138,4 +162,4 @@ if __name__ == "__main__":
     f_list.printAtIdx(5)
     
     print "Finding shortest sequence--"
-    print shortestSequenceFizzBuzz(["fizz","fizzbuzz"])
+    print shortestSequenceFizzBuzz(["buzz","fizz"])
