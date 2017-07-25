@@ -1,6 +1,7 @@
 from Queue import Queue
+import StringIO
 import sys
-
+import unittest
 
 #Simple implmentation of the fizzbuzz problem
 def fizzBuzzPrint(list):
@@ -11,8 +12,6 @@ def fizzBuzzPrint(list):
             print "buzz"
         elif num % 3 == 0:
             print "fizz"
-        else:
-            print ""
             
 #Non looping method #1: Recursion
 def fizzBuzzPrintRecursive(list,index):
@@ -24,8 +23,6 @@ def fizzBuzzPrintRecursive(list,index):
         print "buzz"
     elif list[index] % 3 == 0:
         print "fizz"
-    else:
-        print ""
     fizzBuzzPrintRecursive(list,index + 1)
             
 #Non looping method #2: Custom class to print "fizz", "buzz", "fizzbuzz" based on the index we are getting
@@ -41,8 +38,6 @@ class FizzBuzzList(list):
             print "buzz"
         elif item % 3 == 0:
             print "fizz"
-        else:
-            print ""
             
 
 """
@@ -122,6 +117,9 @@ def shortestSequenceFizzBuzz(input):
         
 def isSubList(input, window):
 
+    if input is None or window is None or len(input) == 0:
+        return False
+
     for i in range(0,len(window) - len(input) + 1):
         is_sublist = True
         for j in range(0,len(input)):
@@ -148,18 +146,46 @@ def convertNumToFizzBuzz(num):
         return "fizz"
     else:
         return None
+        
+class TestMethods(unittest.TestCase):
+
+    def test_fizzbuzz(self):
+        capturedOutput = StringIO.StringIO()          
+        sys.stdout = capturedOutput                   
+        fizzBuzzPrint([3,10,22,32,10,15])
+        self.assertEqual(capturedOutput.getvalue(), 'fizz\nbuzz\nbuzz\nfizzbuzz\n')
+        sys.stdout = sys.__stdout__
+        
+    def test_fizzbuzz_recursive(self):
+        capturedOutput = StringIO.StringIO()          
+        sys.stdout = capturedOutput                   
+        fizzBuzzPrintRecursive([3,10,22,32,10,15],0)
+        self.assertEqual(capturedOutput.getvalue(), 'fizz\nbuzz\nbuzz\nfizzbuzz\n')
+        sys.stdout = sys.__stdout__
+        
+    def test_fizzbuzz_class(self):
+        capturedOutput = StringIO.StringIO()          
+        sys.stdout = capturedOutput                   
+        f_list = FizzBuzzList()
+        f_list.extend([3,10,22,32,10,15])
+        f_list.printAtIdx(0)
+        f_list.printAtIdx(1)
+        f_list.printAtIdx(4)
+        f_list.printAtIdx(5)
+        self.assertEqual(capturedOutput.getvalue(), 'fizz\nbuzz\nbuzz\nfizzbuzz\n')
+        sys.stdout = sys.__stdout__
+        
+    def test_sublist(self):
+        self.assertEqual(isSubList([1,2,3],[5,3,6,1,2,3,5,3,10]),True)
+        self.assertEqual(isSubList([1,2,3,5,6],[5,3,6,1,2,3,5,3,10]),False)
+        self.assertEqual(isSubList([],[5,3,6]),False)
+        
+    def test_fizzbuzz_lowest_sequence(self):
+        self.assertEqual(shortestSequenceFizzBuzz(["fizz","buzz"]),[9,10])
+        self.assertEqual(shortestSequenceFizzBuzz([]),None)
+        self.assertEqual(shortestSequenceFizzBuzz(["fizz","buzz","fizz"]),[3,4,5,6])
+        self.assertEqual(shortestSequenceFizzBuzz(["fizzbuzz","fizz"]),[15,16,17,18])
+        self.assertEqual(shortestSequenceFizzBuzz(["fizz","fizz","buzz","buzz"]),None)
             
 if __name__ == "__main__":
-    print "Normal iterative-----------"
-    fizzBuzzPrint([3,10,22,32,10,15])
-    print "Recursion -----------------"
-    fizzBuzzPrintRecursive([3,10,22,32,10,15],0)
-    print "Class implemtation---------"
-    f_list = FizzBuzzList()
-    f_list.extend([3,10,22,32,10,15])
-    f_list.printAtIdx(0)
-    f_list.printAtIdx(1)
-    f_list.printAtIdx(5)
-    
-    print "Finding shortest sequence--"
-    print shortestSequenceFizzBuzz(["buzz","fizz"])
+    unittest.main()
