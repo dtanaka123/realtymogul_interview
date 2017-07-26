@@ -1,0 +1,31 @@
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="static/propertyview-controller.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+</head>
+<body ng-app="PropertyViewApp">
+    <div ng-controller="PropertyViewController">
+        <table>
+            <tr>
+                <th>PROP_NAME</th>
+                <th>ADDRESS</th> 
+                <th>CITY</th>
+                <th>STATE_ID</th>
+                <th>ZIP</th>
+                <th>MISSING_FIELD_COUNT</th>
+                <th>MISSING_DATA_ENCODING</th>
+            </tr>
+            <tr ng-repeat="p in properties">
+                <td>{{ p.PROP_NAME }}</td>
+                <td>{{ p.ADDRESS }}</td>
+                <td>{{ p.CITY }}</td>
+                <td>{{ p.STATE_ID }}</td>
+                <td>{{ p.ZIP }}</td>
+                <td>{{ p.MISSING_FIELD_COUNT }}</td>
+                <td>{{ p.MISSING_DATA_ENCODING }}</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

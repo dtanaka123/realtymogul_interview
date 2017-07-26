@@ -1,4 +1,4 @@
-from flask import Flask,request,jsonify
+from flask import Flask,request,jsonify,send_file
 import csv
 import unittest
 from settings import APP_CSV_FILE
@@ -68,7 +68,7 @@ def process_row(row,headers):
 
 @app.route('/')
 def hello_world():
-    return 'Hello, World!'
+    return send_file('templates/index.html')
     
 @app.route('/data', methods=['GET'])
 def get_data():
@@ -98,6 +98,7 @@ class TestMethods(unittest.TestCase):
         prop = process_row(['asdfas','','','asdfasd','dfasd'],headers)
         self.assertEqual(prop['MISSING_DATA_ENCODING'],'122')
         self.assertEqual(prop['MISSING_FIELD_COUNT'],2)
+        self.assertEqual()
         
         
 if __name__ == "__main__":
